@@ -1,0 +1,114 @@
+---
+title: "Staging agent workspaces for CompBioBench questions"
+author: "Vince Carey"
+package: CBBBioc
+output:
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Staging agent workspaces for CompBioBench questions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{r wrap_prompt}
+# wrap a multi-line prompt line-by-line so it reads without horizontal scrolling
+wrap_prompt = function(prompt, width = 80) {
+  lines = strsplit(prompt, "\n")[[1]]
+  unlist(lapply(lines, function(l) if (nzchar(l)) strwrap(l, width = width) else ""))
+}
+```
+
+# Introduction
+
+Genentech's `compbiobench-runner` benchmarks LLM CLI agents (Claude Code,
+Codex, ...) on computational biology questions. For each question it
+builds a per-question folder containing a `workspace/` directory (holding
+any input files the question references) and a `prompt.md` describing the
+task, then launches an agent inside that folder.
+
+`CBBBioc` catalogs the same question set, in the `v1qs` data element, and
+provides `cbb_url()` to locate each input file in cloud storage. This
+vignette demonstrates `cbb_setup_workspace()`, which stages a folder for a
+single `v1qs` question in the same shape that `compbiobench-runner` uses,
+so that an agent (or a person) can be pointed at `workspace_dir` and given
+`prompt` to work from. Downloads are cached with `r Biocpkg("BiocFileCache")`
+so that re-staging the same question does not re-fetch files that are
+already local.
+
+```{r lib, message=FALSE}
+library(CBBBioc)
+```
+
+We check for network access once, since fetching question files requires
+reaching the cloud bucket behind `cbb_url()`.
+
+```{r netcheck}
+net_ok = !inherits(
+  try(suppressWarnings(close(url(cbb_url("mt.sorted.bam"), open = "rb"))), silent = TRUE),
+  "try-error"
+)
+net_ok
+```
+
+# Case 1: a question with no associated files
+
+Many questions (e.g. identifier lookups) need no input files at all.
+`cbb_setup_workspace()` still creates the folder and the prompt, just with
+an empty `workspace/`.
+
+```{r case1}
+ws1 = cbb_setup_workspace("ensembl-grab-q1", base_dir = tempdir(), overwrite = TRUE)
+ws1$workspace_dir
+ws1$files
+list.files(ws1$workspace_dir)
+cat(wrap_prompt(ws1$prompt), sep = "\n")
+```
+
+# Case 2: a question with a single file, and caching behavior
+
+`bam-infer-read-length-q1` references one BAM file. The first call to
+`cbb_setup_workspace()` downloads it through `cbb_filecache()`; a second
+call for the same question reuses the cached copy rather than
+re-downloading, which we can see as a drop in elapsed time.
+
+```{r case2, eval=net_ok}
+t0 = system.time(
+  ws2 <- cbb_setup_workspace("bam-infer-read-length-q1", base_dir = tempdir(), overwrite = TRUE)
+)
+ws2$files
+file.size(file.path(ws2$workspace_dir, ws2$files))
+t0[["elapsed"]]
+```
+
+```{r case2b, eval=net_ok}
+t1 = system.time(
+  ws2b <- cbb_setup_workspace("bam-infer-read-length-q1", base_dir = tempdir(), overwrite = TRUE)
+)
+t1[["elapsed"]]
+```
+
+The second call is substantially faster because `BiocFileCache` resolved
+the file from its local cache instead of downloading it again.
+
+# Case 3: a question with multiple files
+
+`differential-composition-q1` references three files (two count matrices
+and a gene list). All are fetched into the same workspace, and `FILES:`
+in the prompt lists all of them.
+
+```{r case3, eval=net_ok}
+ws3 = cbb_setup_workspace("differential-composition-q1", base_dir = tempdir(), overwrite = TRUE)
+ws3$files
+list.files(ws3$workspace_dir)
+cat(wrap_prompt(ws3$prompt), sep = "\n")
+```
+
+# Session info
+
+```{r sessionInfo}
+sessionInfo()
+```
