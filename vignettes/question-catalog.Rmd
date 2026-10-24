@@ -1,0 +1,131 @@
+---
+title: "The CompBioBench question catalog"
+author: "Vince Carey"
+package: CBBBioc
+output:
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{The CompBioBench question catalog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE)
+```
+
+# Background
+
+[CompBioBench](https://github.com/genentech/compbiobench-runner) is a
+benchmark, developed at Genentech, for evaluating LLM coding agents
+(Claude Code, Codex, ...) on computational biology tasks. Each benchmark
+question poses a concrete bioinformatics problem -- identifier
+translation, metadata recovery from a sequencing file, interpreting a
+genomic locus, reproducing a published analysis, and so on -- and may
+reference one or more data files that the agent needs in order to answer.
+`compbiobench-runner`'s `run_benchmark.py` drives an agent through each
+question in an isolated conda environment and records the agent's answer,
+reasoning trace, and token/cost usage.
+
+`CBBBioc` packages the question metadata for that benchmark as the data
+element `v1qs`, provides `cbb_url()` to resolve each referenced file to its
+location in cloud storage, and provides `cbb_setup_workspace()` to stage a
+`workspace/` + `prompt.md` folder for a question exactly as
+`compbiobench-runner` would, so that the question set can be explored, and
+individual questions worked, from R. See the
+`vignette("setup_workspace")` vignette for that workflow end to end.
+
+This vignette is a narrative, browsable tour of the question catalog
+itself.
+
+```{r lib}
+library(CBBBioc)
+library(DT)
+data(v1qs)
+```
+
+# What's in a question
+
+Each row of `v1qs` is one benchmark question:
+
+```{r cols}
+colnames(v1qs)
+```
+
+- **question_id** -- a short, stable identifier (e.g. `r v1qs$question_id[1]`)
+- **domain** / **question_style** / **skills_tested** -- how the question is
+  categorized (domain area, task shape, skills exercised)
+- **question** -- the task as posed to the agent
+- **file_paths** -- comma-separated input file name(s), if any; resolved via
+  `cbb_url()` and fetched into a workspace by `cbb_setup_workspace()`
+- **internet_required** / **gpu_preferred** -- hints about what the
+  answering agent may need access to
+
+# Coverage by domain
+
+```{r domtab}
+knitr::kable(as.data.frame(table(Domain = v1qs$domain)), row.names = FALSE)
+```
+
+```{r filetab}
+has_files = sum(v1qs$file_paths != "")
+```
+
+`r nrow(v1qs)` questions are cataloged in total; `r has_files` of them
+(`r round(100 * has_files / nrow(v1qs))`%) have one or more associated
+input files.
+
+# Browsing the full catalog
+
+The table below is interactive: use the column filters to narrow by
+domain or question style, search across question text, and sort columns.
+(If you are reading this on CRAN/Bioconductor's static vignette viewer
+rather than the `r CRANpkg("pkgdown")` site, the widget still renders, but
+try the [pkgdown site](https://vjcitn.github.io/CBBBioc/) for the
+full-width view.)
+
+```{r dt, echo=FALSE}
+tbl = v1qs[, c("question_id", "domain", "question_style", "curator_name",
+               "skills_tested", "question", "internet_required",
+               "gpu_preferred", "file_paths")]
+datatable(
+  tbl,
+  rownames = FALSE,
+  filter = "top",
+  extensions = "Buttons",
+  options = list(
+    pageLength = 15,
+    lengthMenu = c(10, 15, 25, 50, 100),
+    scrollX = TRUE,
+    dom = "Blfrtip",
+    buttons = c("copy", "csv")
+  )
+)
+```
+
+# From browsing to staging
+
+Once a question of interest is identified -- say
+`r v1qs$question_id[1]` -- `cbb_setup_workspace()` creates a folder an
+agent (or a person) can work from directly:
+
+```{r example, eval=FALSE}
+ws = cbb_setup_workspace(v1qs$question_id[1])
+ws$workspace_dir  # cd here
+cat(ws$prompt)    # what to ask the agent
+```
+
+See `vignette("setup_workspace")` for a fuller walk-through, including
+the `r Biocpkg("BiocFileCache")`-backed download caching used when a
+question's files need to be fetched from cloud storage.
+
+# References
+
+- CompBioBench runner: <https://github.com/genentech/compbiobench-runner>
+- `CBBBioc` source: <https://github.com/vjcitn/CBBBioc>
+
+# Session info
+
+```{r sessionInfo}
+sessionInfo()
+```

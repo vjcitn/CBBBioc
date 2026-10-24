@@ -1,0 +1,16 @@
+url: https://vjcitn.github.io/CBBBioc/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+
+articles:
+  - title: Articles
+    navbar: ~
+    contents:
+      - question-catalog
+      - setup_workspace
