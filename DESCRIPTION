@@ -1,6 +1,6 @@
 Package: CBBBioc
 Title: Bioconductor interface to Genentech's CompBioBench
-Version: 0.0.1
+Version: 0.0.2
 Authors@R:
     person(given = "Vince",
            family = "Carey",
