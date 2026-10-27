@@ -76,140 +76,69 @@
 </h2>
 <p><code>v1qs</code> currently holds 100 questions across these domains:</p>
 <table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
 <thead><tr>
 <th align="left">Domain</th>
 <th align="right">Freq</th>
 <th align="left">File types used</th>
+<th align="left">Example question</th>
 </tr></thead>
 <tbody>
 <tr>
 <td align="left">Epigenomics</td>
 <td align="right">20</td>
 <td align="left">bigWig, csv, fasta, gz, tar</td>
+<td align="left">Consider chr11:124,738,681-124,738,772 (hg38).<br>What is the likely purpose of this region? Choose<br>only one. A. Active enhancer, Liver B. Active<br>enhancer, Brain frontal lobe C. Active enhancer,<br>ESC D. Active transcription, ubiquitous E. TSS<br>poised or flanking, ubiquitous F. Polycomb<br>repression, ubiquitous. Respond with a single<br>letter.</td>
 </tr>
 <tr>
 <td align="left">Genomics</td>
 <td align="right">20</td>
 <td align="left">bam, fa, fna, gz</td>
+<td align="left">Convert all of the following to Ensembl gene IDs.<br>Provide the ID without the Ensembl version (e.g.,<br>ENSGXXXXXXXXXXXX not ENSGXXXXXXXXXXXX.XX).<br>Respond with semi-colon separated values, no<br>spaces. Inputs: 1. NM_001276266.2 2. TERB2 3.<br>ENST00000267814 4. chr15:45167214-45187966 (hg38)<br>5. GeneID:9153 6. NP_922946.1 7. MIM:617658 8.<br>BEN domain containing 5, transcript variant 6.</td>
 </tr>
 <tr>
 <td align="left">Machine Learning</td>
 <td align="right">7</td>
 <td align="left">pdf, tsv</td>
+<td align="left">Run the DNA language model here:<br><a href="https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16" class="external-link uri">https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16</a><br>on the 1000 bp long DNA sequence at hg38<br>chr12:7792299-7793299. Specifically, mask each<br>base one at a time, keeping all others unmasked,<br>and compute the per position base 2 entropy of<br>the predictions. Return the substring<br>corresponding to the longest run with &lt;0.5<br>entropy.</td>
 </tr>
 <tr>
 <td align="left">Population Genetics</td>
 <td align="right">12</td>
 <td align="left">gz</td>
+<td align="left">Identify the PubMed ID of the study from which<br>this summary statistics in<br>reverse.search.gwas.q1.tsv.gz are derived. Print<br>only the PMID, e.g. 31510655.</td>
 </tr>
 <tr>
 <td align="left">Single-cell</td>
 <td align="right">21</td>
 <td align="left">bam, gz, h5ad, rds, sizes</td>
+<td align="left">differential.composition.q1.1.mtx.gz and<br>differential.composition.q1.2.mtx.gz contain raw<br>scRNA counts matrices derived from retinal<br>samples of two individuals (one per file, each<br>column is a unique barcode that passes QC).<br>differential.composition.q1.genes.txt.gz is the<br>list of common genes. One of the cell types is<br>severely depleted in one of the two individuals.<br>What is this cell type? Return only the name of<br>the depleted cell type from this list: astrocyte,<br>microglial cell, RPE cell, cone cell, rod cell,<br>horizontal cell, bipolar cell, RGC, T cells,<br>macrophage, Schwann cell, Pericyte, B cell,<br>fibroblast, endothelial cell, muller glia cell.</td>
 </tr>
 <tr>
 <td align="left">Spatial</td>
 <td align="right">2</td>
 <td align="left">gz</td>
+<td align="left">You are given a set of single cell transcriptomic<br>data and Visium spatial transcriptomic data<br>(spatial.sim.tar.gz). The single cell counts<br>matrix is found at spatial_q_sc_counts.csv, and<br>accompanying cell type metadata is found at<br>spatial_q_sc_metadata.csv. Spatial count data is<br>found at spatial_q_matrix.mtx.gz, gene counts are<br>found at spatial_q_features.tsv.gz, and are found<br>at spot barcodes spatial_q_barcodes.tsv.gz.<br>Finally scale factors are found at<br>spatial_q_scalefactors_json.json, high and low<br>resolution tissue images are found at<br>spatial_q_tissue_hires_image.png and<br>patial_q_tissue_hires_image.png respectively, and<br>tissue positions are found at<br>spatial_q_tissue_positions.csv. The spot-based<br>data is comprised entirely of cell types found in<br>the single cell data. Can you tell me what cell<br>type or cell types, if any, are biased towards<br>being in closer spatial proximity to spots<br>containing Tumor_Core? If none, please return<br>“None”. Please list these separated by commas in<br>alphabetical order. Expected answer format:<br>Endothelial,Macrophage.</td>
 </tr>
 <tr>
 <td align="left">Structure</td>
 <td align="right">1</td>
 <td align="left">pdb</td>
+<td align="left">Consider the PDB protein in the file<br>protein.shape.q1.pdb. Which of the following<br>uppercase letters does it resemble most closely:<br>B, D, F, H, J, L, N, P, R, T, V, X, Z? Consider<br>all possible projections and pick the best fit.</td>
 </tr>
 <tr>
 <td align="left">Transcriptomics</td>
 <td align="right">17</td>
 <td align="left">bam, fq, gz, tsv, txt</td>
+<td align="left">I have a bulk human RNA-seq fastq file<br>cryptic.exon.q1.fq.gz. There is exactly one<br>highly expressed coding gene that has a cryptic<br>exon in it formed by two novel junctions. Report<br>the HGNC gene symbol (uppercase) for that gene.</td>
 </tr>
 </tbody>
 </table>
-<p>One example question per domain, wrapped (not truncated) to a fixed width so it reads without horizontal scrolling in any viewer:</p>
-<p><strong>Epigenomics</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>Consider chr11<span class="sc">:</span><span class="dv">124</span>,<span class="dv">738</span>,<span class="dv">681-124</span>,<span class="dv">738</span>,<span class="dv">772</span> (hg38).</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>What is the likely purpose of this region? Choose</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>only one. A. Active enhancer, Liver B. Active</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>enhancer, Brain frontal lobe C. Active enhancer,</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>ESC D. Active transcription, ubiquitous E. TSS</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>poised or flanking, ubiquitous F. Polycomb</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>repression, ubiquitous. Respond with a single</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>letter.</span></code></pre></div>
-<p><strong>Genomics</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>Convert all of the following to Ensembl gene IDs.</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>Provide the ID without the Ensembl <span class="fu">version</span> (e.g.,</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>ENSGXXXXXXXXXXXX not ENSGXXXXXXXXXXXX.XX).</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>Respond with semi<span class="sc">-</span>colon separated values, no</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>spaces. Inputs<span class="sc">:</span> <span class="fl">1.</span> NM_001276266<span class="fl">.2</span> <span class="fl">2.</span> TERB2 <span class="fl">3.</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>ENST00000267814 <span class="fl">4.</span> chr15<span class="sc">:</span><span class="dv">45167214-45187966</span> (hg38)</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fl">5.</span> GeneID<span class="sc">:</span><span class="dv">9153</span> <span class="fl">6.</span> NP_922946<span class="fl">.1</span> <span class="fl">7.</span> MIM<span class="sc">:</span><span class="dv">617658</span> <span class="fl">8.</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>BEN domain containing <span class="dv">5</span>, transcript variant <span class="fl">6.</span></span></code></pre></div>
-<p><strong>Machine Learning</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Run the DNA language model here<span class="sc">:</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>huggingface.co<span class="sc">/</span>kuleshov<span class="sc">-</span>group<span class="sc">/</span>caduceus<span class="sc">-</span>ph_seqlen<span class="dv">-131</span>k_d_model<span class="dv">-256</span>_n_layer<span class="dv">-16</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>on the <span class="dv">1000</span> bp long DNA sequence at hg38</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>chr12<span class="sc">:</span><span class="dv">7792299</span><span class="fl">-7793299.</span> Specifically, mask each</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>base one at a time, keeping all others unmasked,</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>and compute the per position base <span class="dv">2</span> entropy of</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>the predictions. Return the substring</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>corresponding to the longest run with <span class="sc">&lt;</span><span class="fl">0.5</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>entropy.</span></code></pre></div>
-<p><strong>Population Genetics</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>Identify the PubMed ID of the study from which</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>this summary statistics <span class="cf">in</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>reverse.search.gwas.q1.tsv.gz are derived. Print</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>only the PMID, e.g. <span class="fl">31510655.</span></span></code></pre></div>
-<p><strong>Single-cell</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>differential.composition.q1.<span class="fl">1.</span>mtx.gz and</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>differential.composition.q1.<span class="fl">2.</span>mtx.gz contain raw</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>scRNA counts matrices derived from retinal</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>samples of two <span class="fu">individuals</span> (one per file, each</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>column is a unique barcode that passes QC).</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>differential.composition.q1.genes.txt.gz is the</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>list of common genes. One of the cell types is</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>severely depleted <span class="cf">in</span> one of the two individuals.</span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>What is this cell type? Return only the name of</span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>the depleted cell type from this list<span class="sc">:</span> astrocyte,</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>microglial cell, RPE cell, cone cell, rod cell,</span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>horizontal cell, bipolar cell, RGC, T cells,</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>macrophage, Schwann cell, Pericyte, B cell,</span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>fibroblast, endothelial cell, muller glia cell.</span></code></pre></div>
-<p><strong>Spatial</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>You are given a set of single cell transcriptomic</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>data and Visium spatial transcriptomic data</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>(spatial.sim.tar.gz). The single cell counts</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>matrix is found at spatial_q_sc_counts.csv, and</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>accompanying cell type metadata is found at</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>spatial_q_sc_metadata.csv. Spatial count data is</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>found at spatial_q_matrix.mtx.gz, gene counts are</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>found at spatial_q_features.tsv.gz, and are found</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>at spot barcodes spatial_q_barcodes.tsv.gz.</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>Finally scale factors are found at</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>spatial_q_scalefactors_json.json, high and low</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>resolution tissue images are found at</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>spatial_q_tissue_hires_image.png and</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>patial_q_tissue_hires_image.png respectively, and</span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>tissue positions are found at</span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>spatial_q_tissue_positions.csv. The spot<span class="sc">-</span>based</span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>data is comprised entirely of cell types found <span class="cf">in</span></span>
-<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>the single cell data. Can you tell me what cell</span>
-<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>type or cell types, <span class="cf">if</span> any, are biased towards</span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>being <span class="cf">in</span> closer spatial proximity to spots</span>
-<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>containing Tumor_Core? If none, please return</span>
-<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="st">"None"</span>. Please list these separated by commas <span class="cf">in</span></span>
-<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>alphabetical order. Expected answer format<span class="sc">:</span></span>
-<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>Endothelial,Macrophage.</span></code></pre></div>
-<p><strong>Structure</strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>Consider the PDB protein <span class="cf">in</span> the file</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>protein.shape.q1.pdb. Which of the following</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>uppercase letters does it resemble most closely<span class="sc">:</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>B, D, F, H, J, L, N, P, R, T, V, X, Z? Consider</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>all possible projections and pick the best fit.</span></code></pre></div>
-<p><strong>Transcriptomics</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>I have a bulk human RNA<span class="sc">-</span>seq fastq file</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>cryptic.exon.q1.fq.gz. There is exactly one</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>highly expressed coding gene that has a cryptic</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>exon <span class="cf">in</span> it formed by two novel junctions. Report</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>the HGNC gene <span class="fu">symbol</span> (uppercase) <span class="cf">for</span> that gene.</span></code></pre></div>
 <p>73 of the 100 questions have one or more associated input files, retrievable via <code><a href="reference/cbb_url.html">cbb_url()</a></code> and stageable with <code><a href="reference/cbb_setup_workspace.html">cbb_setup_workspace()</a></code>.</p>
 <div class="section level3">
 <h3 id="browse-the-full-catalog">Browse the full catalog<a class="anchor" aria-label="anchor" href="#browse-the-full-catalog"></a>
@@ -294,7 +223,7 @@
 </tbody>
 </table>
 <p>Production of README.md:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">"README.Rmd"</span>, <span class="at">output_format =</span> <span class="st">"github_document"</span>, <span class="at">output_file =</span> <span class="st">"README.md"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">"README.Rmd"</span>, <span class="at">output_format =</span> <span class="st">"github_document"</span>, <span class="at">output_file =</span> <span class="st">"README.md"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 </div>

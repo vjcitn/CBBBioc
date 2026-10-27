@@ -70,140 +70,21 @@ dom_summary = do.call(rbind, lapply(sort(unique(v1qs$domain)), function(d) {
     function(z) tools::file_ext(gsub(" ", "", z))
   )))
   exts = exts[exts != ""]
+  # wrap (not truncate) the example question, and join with <br/> so the
+  # table cell wraps onto multiple lines instead of forcing horizontal scroll
+  ex_q = paste(strwrap(sub$question[1], width = 50), collapse = "<br/>")
   data.frame(
     Domain = d,
     Freq = nrow(sub),
     `File types used` = if (length(exts)) paste(sort(exts), collapse = ", ") else "(none)",
+    `Example question` = ex_q,
     check.names = FALSE
   )
 }))
-knitr::kable(dom_summary, row.names = FALSE)
+knitr::kable(dom_summary, row.names = FALSE, escape = FALSE)
 ```
 
-| Domain              | Freq | File types used             |
-|:--------------------|-----:|:----------------------------|
-| Epigenomics         |   20 | bigWig, csv, fasta, gz, tar |
-| Genomics            |   20 | bam, fa, fna, gz            |
-| Machine Learning    |    7 | pdf, tsv                    |
-| Population Genetics |   12 | gz                          |
-| Single-cell         |   21 | bam, gz, h5ad, rds, sizes   |
-| Spatial             |    2 | gz                          |
-| Structure           |    1 | pdb                         |
-| Transcriptomics     |   17 | bam, fq, gz, tsv, txt       |
-
-One example question per domain, wrapped (not truncated) to a fixed
-width so it reads without horizontal scrolling in any viewer:
-
-``` r
-
-for (d in sort(unique(v1qs$domain))) {
-  cat(sprintf("\n**%s**\n\n", d))
-  cat("```\n")
-  cat(strwrap(v1qs$question[v1qs$domain == d][1], width = 50), sep = "\n")
-  cat("\n```\n")
-}
-```
-
-**Epigenomics**
-
-    Consider chr11:124,738,681-124,738,772 (hg38).
-    What is the likely purpose of this region? Choose
-    only one. A. Active enhancer, Liver B. Active
-    enhancer, Brain frontal lobe C. Active enhancer,
-    ESC D. Active transcription, ubiquitous E. TSS
-    poised or flanking, ubiquitous F. Polycomb
-    repression, ubiquitous. Respond with a single
-    letter.
-
-**Genomics**
-
-    Convert all of the following to Ensembl gene IDs.
-    Provide the ID without the Ensembl version (e.g.,
-    ENSGXXXXXXXXXXXX not ENSGXXXXXXXXXXXX.XX).
-    Respond with semi-colon separated values, no
-    spaces. Inputs: 1. NM_001276266.2 2. TERB2 3.
-    ENST00000267814 4. chr15:45167214-45187966 (hg38)
-    5. GeneID:9153 6. NP_922946.1 7. MIM:617658 8.
-    BEN domain containing 5, transcript variant 6.
-
-**Machine Learning**
-
-    Run the DNA language model here:
-    https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16
-    on the 1000 bp long DNA sequence at hg38
-    chr12:7792299-7793299. Specifically, mask each
-    base one at a time, keeping all others unmasked,
-    and compute the per position base 2 entropy of
-    the predictions. Return the substring
-    corresponding to the longest run with <0.5
-    entropy.
-
-**Population Genetics**
-
-    Identify the PubMed ID of the study from which
-    this summary statistics in
-    reverse.search.gwas.q1.tsv.gz are derived. Print
-    only the PMID, e.g. 31510655.
-
-**Single-cell**
-
-    differential.composition.q1.1.mtx.gz and
-    differential.composition.q1.2.mtx.gz contain raw
-    scRNA counts matrices derived from retinal
-    samples of two individuals (one per file, each
-    column is a unique barcode that passes QC).
-    differential.composition.q1.genes.txt.gz is the
-    list of common genes. One of the cell types is
-    severely depleted in one of the two individuals.
-    What is this cell type? Return only the name of
-    the depleted cell type from this list: astrocyte,
-    microglial cell, RPE cell, cone cell, rod cell,
-    horizontal cell, bipolar cell, RGC, T cells,
-    macrophage, Schwann cell, Pericyte, B cell,
-    fibroblast, endothelial cell, muller glia cell.
-
-**Spatial**
-
-    You are given a set of single cell transcriptomic
-    data and Visium spatial transcriptomic data
-    (spatial.sim.tar.gz). The single cell counts
-    matrix is found at spatial_q_sc_counts.csv, and
-    accompanying cell type metadata is found at
-    spatial_q_sc_metadata.csv. Spatial count data is
-    found at spatial_q_matrix.mtx.gz, gene counts are
-    found at spatial_q_features.tsv.gz, and are found
-    at spot barcodes spatial_q_barcodes.tsv.gz.
-    Finally scale factors are found at
-    spatial_q_scalefactors_json.json, high and low
-    resolution tissue images are found at
-    spatial_q_tissue_hires_image.png and
-    patial_q_tissue_hires_image.png respectively, and
-    tissue positions are found at
-    spatial_q_tissue_positions.csv. The spot-based
-    data is comprised entirely of cell types found in
-    the single cell data. Can you tell me what cell
-    type or cell types, if any, are biased towards
-    being in closer spatial proximity to spots
-    containing Tumor_Core? If none, please return
-    "None". Please list these separated by commas in
-    alphabetical order. Expected answer format:
-    Endothelial,Macrophage.
-
-**Structure**
-
-    Consider the PDB protein in the file
-    protein.shape.q1.pdb. Which of the following
-    uppercase letters does it resemble most closely:
-    B, D, F, H, J, L, N, P, R, T, V, X, Z? Consider
-    all possible projections and pick the best fit.
-
-**Transcriptomics**
-
-    I have a bulk human RNA-seq fastq file
-    cryptic.exon.q1.fq.gz. There is exactly one
-    highly expressed coding gene that has a cryptic
-    exon in it formed by two novel junctions. Report
-    the HGNC gene symbol (uppercase) for that gene.
+[TABLE]
 
 ``` r
 
