@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CBBBioc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/question-catalog.html">The CompBioBench question catalog</a></li>
     <li><a class="dropdown-item" href="../articles/setup_workspace.html">Staging agent workspaces for CompBioBench questions</a></li>
+    <li><a class="dropdown-item" href="../articles/run_benchmark_claude.html">Running compbiobench-runner against Claude: a worked example</a></li>
   </ul>
 </li>
       </ul>
@@ -113,7 +114,7 @@ prompt, just with an empty <code>workspace/</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ws1</span> <span class="op">=</span> <span class="fu"><a href="../reference/cbb_setup_workspace.html">cbb_setup_workspace</a></span><span class="op">(</span><span class="st">"ensembl-grab-q1"</span>, base_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">ws1</span><span class="op">$</span><span class="va">workspace_dir</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/yw/gfhgh7k565v9w83x_k764wbc0000gp/T//RtmpCNt2cN/ensembl-grab-q1/workspace"</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/yw/gfhgh7k565v9w83x_k764wbc0000gp/T//RtmpA5lkAF/ensembl-grab-q1/workspace"</span></span>
 <span><span class="va">ws1</span><span class="op">$</span><span class="va">files</span></span>
 <span><span class="co">#&gt; character(0)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">ws1</span><span class="op">$</span><span class="va">workspace_dir</span><span class="op">)</span></span>
@@ -159,13 +160,13 @@ in elapsed time.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">ws2</span><span class="op">$</span><span class="va">workspace_dir</span>, <span class="va">ws2</span><span class="op">$</span><span class="va">files</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 876871</span></span>
 <span><span class="va">t0</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.068</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.067</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">ws2b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbb_setup_workspace.html">cbb_setup_workspace</a></span><span class="op">(</span><span class="st">"bam-infer-read-length-q1"</span>, base_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">t1</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.039</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.037</span></span></code></pre></div>
 <p>The second call is substantially faster because
 <code>BiocFileCache</code> resolved the file from its local cache
 instead of downloading it again.</p>
@@ -242,7 +243,7 @@ workspace, and <code>FILES:</code> in the prompt lists all of them.</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] CBBBioc_0.0.1    BiocStyle_2.41.0</span></span>
+<span><span class="co">#&gt; [1] CBBBioc_0.0.2    BiocStyle_2.41.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] bit_4.6.0           jsonlite_2.0.0      dplyr_1.2.1        </span></span>

@@ -1,0 +1,15 @@
+{
+  "llm": "claude",
+  "model": "claude-sonnet-4-5",
+  "version": "2.1.281 (Claude Code)",
+  "input_csv": "test_benchmark.csv",
+  "parallel_jobs": 1,
+  "timeout_minutes": 120,
+  "base_env": "compbio-benchmark",
+  "keep_envs": false,
+  "resume_clean_workspace": false,
+  "model_reasoning_effort": "low",
+  "timestamp": "20261027_062638",
+  "total_questions": 2,
+  "questions_to_run": 2
+}

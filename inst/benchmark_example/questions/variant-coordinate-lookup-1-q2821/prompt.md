@@ -1,0 +1,28 @@
+# Prompt: variant-coordinate-lookup-1-q2821
+
+| Field | Value |
+|-------|-------|
+| **Model** | claude-sonnet-4-5 |
+| **Timeout** | 120 min |
+| **Difficulty** | 1.0 |
+
+## Prompt
+
+```
+QUESTION: Retrieve the single base genomic position for the variant identifier rs200533370 on the GRCh38 reference assembly, and report it in chr#:position format (1-based, inclusive).
+
+INSTRUCTIONS:
+- You have 120 minutes to complete this task
+- Do not read/access any other files outside the workspace.
+- Get any files or tools you need from the internet.
+- You are free to modify the current conda environment as needed.
+- Keep all scripts and intermediate data in the workspace only.
+
+OUTPUT CONTRACT (IMPORTANT):
+- Your final response will be graded by exact string match.
+- Return EXACTLY ONE LINE containing **ONLY** the final answer in the format required by the question.
+- Do NOT include any explanation, reasoning, labels, prefixes, markdown, code fences, citations, or extra whitespace lines.
+- Any extra text before or after the answer is incorrect.
+- Before sending your final response, verify it is exactly one line and nothing else.
+
+```

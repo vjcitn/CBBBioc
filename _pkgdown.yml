@@ -14,3 +14,4 @@ articles:
     contents:
       - question-catalog
       - setup_workspace
+      - run_benchmark_claude

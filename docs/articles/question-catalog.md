@@ -3,30 +3,8 @@
 ## Background
 
 [CompBioBench](https://github.com/genentech/compbiobench-runner) is a
-benchmark, developed at Genentech, for evaluating LLM coding agents
-(Claude Code, Codex, …) on computational biology tasks. Each benchmark
-question poses a concrete bioinformatics problem – identifier
-translation, metadata recovery from a sequencing file, interpreting a
-genomic locus, reproducing a published analysis, and so on – and may
-reference one or more data files that the agent needs in order to
-answer. `compbiobench-runner`’s `run_benchmark.py` drives an agent
-through each question in an isolated conda environment and records the
-agent’s answer, reasoning trace, and token/cost usage.
-
-`CBBBioc` packages the question metadata for that benchmark as the data
-element `v1qs`, provides
-[`cbb_url()`](https://vjcitn.github.io/CBBBioc/reference/cbb_url.md) to
-resolve each referenced file to its location in cloud storage, and
-provides
-[`cbb_setup_workspace()`](https://vjcitn.github.io/CBBBioc/reference/cbb_setup_workspace.md)
-to stage a `workspace/` + `prompt.md` folder for a question exactly as
-`compbiobench-runner` would, so that the question set can be explored,
-and individual questions worked, from R. See the
-[`vignette("setup_workspace")`](https://vjcitn.github.io/CBBBioc/articles/setup_workspace.md)
-vignette for that workflow end to end.
-
-This vignette is a narrative, browsable tour of the question catalog
-itself.
+benchmark, developed at Genentech. It supports evaluation of LLM coding
+agents (Claude Code, Codex, …) on computational biology tasks.
 
 ``` r
 
@@ -35,7 +13,52 @@ library(DT)
 data(v1qs)
 ```
 
-## What’s in a question
+The CBBBioc package includes a snapshot of questions and their
+classification into scientific subcategories of computational biology.
+Each question combines a domain with a question style. We tabulate
+domain/style combinations in the snapshot:
+
+``` r
+
+knitr::kable(as.data.frame.matrix(
+  table(Domain = v1qs$domain, Style = v1qs$question_style)
+))
+```
+
+|  | Metadata Recovery | Retrieval | Routine Analysis | Synthetic/Augmented Data | Tooling |
+|:---|---:|---:|---:|---:|---:|
+| Epigenomics | 8 | 4 | 4 | 3 | 1 |
+| Genomics | 1 | 8 | 7 | 4 | 0 |
+| Machine Learning | 0 | 0 | 0 | 0 | 7 |
+| Population Genetics | 8 | 3 | 0 | 1 | 0 |
+| Single-cell | 8 | 1 | 5 | 7 | 0 |
+| Spatial | 0 | 0 | 0 | 2 | 0 |
+| Structure | 0 | 0 | 0 | 1 | 0 |
+| Transcriptomics | 2 | 1 | 6 | 8 | 0 |
+
+A question may reference one or more data files that the agent can
+retrieve from cloud storage in order to work on the solution. A python
+module (`run_benchmark.py`) from Genentech’s `compbiobench-runner`
+[repository](https://github.com/genentech/compbiobench-runner) drives an
+agent through each question in an isolated conda environment and records
+the agent’s answer, reasoning trace, and token/cost usage.
+
+`CBBBioc` packages the question metadata for each benchmark as a data
+element in `v1qs`. The package also provides
+[`cbb_url()`](https://vjcitn.github.io/CBBBioc/reference/cbb_url.md) to
+resolve each referenced file to its location in cloud storage, and
+provides
+[`cbb_setup_workspace()`](https://vjcitn.github.io/CBBBioc/reference/cbb_setup_workspace.md)
+to stage a `workspace/` + `prompt.md` folder for a question exactly as
+`compbiobench-runner` would. so that the question set can be explored,
+and individual questions worked, from R. See the
+[`vignette("setup_workspace")`](https://vjcitn.github.io/CBBBioc/articles/setup_workspace.md)
+vignette.
+
+This vignette is a narrative, browsable tour of the question catalog
+itself.
+
+## The question data
 
 Each row of `v1qs` is one benchmark question:
 
@@ -105,10 +128,6 @@ associated input files.
 
 The table below is interactive: use the column filters to narrow by
 domain or question style, search across question text, and sort columns.
-(If you are reading this on CRAN/Bioconductor’s static vignette viewer
-rather than the *[pkgdown](https://CRAN.R-project.org/package=pkgdown)*
-site, the widget still renders, but try the [pkgdown
-site](https://vjcitn.github.io/CBBBioc/) for the full-width view.)
 
 ## From browsing to staging
 
@@ -159,7 +178,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] DT_0.34.0        CBBBioc_0.0.1    BiocStyle_2.41.0
+#> [1] DT_0.34.0        CBBBioc_0.0.2    BiocStyle_2.41.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.6           knitr_1.52          rlang_1.3.0        
