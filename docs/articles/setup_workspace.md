@@ -60,7 +60,7 @@ still creates the folder and the prompt, just with an empty
 
 ws1 = cbb_setup_workspace("ensembl-grab-q1", base_dir = tempdir(), overwrite = TRUE)
 ws1$workspace_dir
-#> [1] "/var/folders/yw/gfhgh7k565v9w83x_k764wbc0000gp/T//RtmpygPXEm/ensembl-grab-q1/workspace"
+#> [1] "/var/folders/yw/gfhgh7k565v9w83x_k764wbc0000gp/T//Rtmprdl7FZ/ensembl-grab-q1/workspace"
 ws1$files
 #> character(0)
 list.files(ws1$workspace_dir)
@@ -109,7 +109,7 @@ ws2$files
 file.size(file.path(ws2$workspace_dir, ws2$files))
 #> [1] 876871
 t0[["elapsed"]]
-#> [1] 0.066
+#> [1] 0.07
 ```
 
 ``` r

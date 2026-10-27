@@ -113,7 +113,7 @@ prompt, just with an empty <code>workspace/</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ws1</span> <span class="op">=</span> <span class="fu"><a href="../reference/cbb_setup_workspace.html">cbb_setup_workspace</a></span><span class="op">(</span><span class="st">"ensembl-grab-q1"</span>, base_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">ws1</span><span class="op">$</span><span class="va">workspace_dir</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/yw/gfhgh7k565v9w83x_k764wbc0000gp/T//RtmpygPXEm/ensembl-grab-q1/workspace"</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/yw/gfhgh7k565v9w83x_k764wbc0000gp/T//Rtmprdl7FZ/ensembl-grab-q1/workspace"</span></span>
 <span><span class="va">ws1</span><span class="op">$</span><span class="va">files</span></span>
 <span><span class="co">#&gt; character(0)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">ws1</span><span class="op">$</span><span class="va">workspace_dir</span><span class="op">)</span></span>
@@ -159,7 +159,7 @@ in elapsed time.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">ws2</span><span class="op">$</span><span class="va">workspace_dir</span>, <span class="va">ws2</span><span class="op">$</span><span class="va">files</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 876871</span></span>
 <span><span class="va">t0</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.066</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.07</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">ws2b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbb_setup_workspace.html">cbb_setup_workspace</a></span><span class="op">(</span><span class="st">"bam-infer-read-length-q1"</span>, base_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>

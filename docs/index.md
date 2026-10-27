@@ -1,17 +1,22 @@
 # CBBBioc
 
-Bioconductor interface to Genentech’s
-[CompBioBench](https://github.com/genentech/compbiobench-runner) — a
-benchmark of computational biology questions for evaluating LLM coding
-agents (Claude Code, Codex, …).
+This package experimentally defines a Bioconductor interface to
+Genentech’s
+[CompBioBench](https://github.com/genentech/compbiobench-runner).
+CompBioBench is a framework for evaluating agentic solutions to
+computational biology questions.
 
-`CBBBioc` catalogs the question set (`v1qs`), locates the input files
-each question needs in cloud storage
-([`cbb_url()`](https://vjcitn.github.io/CBBBioc/reference/cbb_url.md)),
-and stages per-question agent workspaces
-([`cbb_setup_workspace()`](https://vjcitn.github.io/CBBBioc/reference/cbb_setup_workspace.md))
-in the same `workspace/` + `prompt.md` layout used by
-[`compbiobench-runner`](https://github.com/genentech/compbiobench-runner).
+`CBBBioc` includes a snapshot of the question set (`v1qs`) available
+around October 2026. The package includes tooling to
+
+- locate in cloud storage the input files each question needs
+  ([`cbb_url()`](https://vjcitn.github.io/CBBBioc/reference/cbb_url.md)),
+- stages per-question agent workspaces
+  ([`cbb_setup_workspace()`](https://vjcitn.github.io/CBBBioc/reference/cbb_setup_workspace.md))
+  in the same `workspace/`
+- set up the `prompt.md` needed by
+  [`compbiobench-runner`](https://github.com/genentech/compbiobench-runner).
+
 See the package vignette for a worked example.
 
 ## Installation
@@ -26,16 +31,7 @@ remotes::install_github("vjcitn/CBBBioc")
 
 `v1qs` currently holds 100 questions across these domains:
 
-| Domain              | Freq |
-|:--------------------|-----:|
-| Epigenomics         |   20 |
-| Genomics            |   20 |
-| Machine Learning    |    7 |
-| Population Genetics |   12 |
-| Single-cell         |   21 |
-| Spatial             |    2 |
-| Structure           |    1 |
-| Transcriptomics     |   17 |
+[TABLE]
 
 73 of the 100 questions have one or more associated input files,
 retrievable via
@@ -44,11 +40,6 @@ stageable with
 [`cbb_setup_workspace()`](https://vjcitn.github.io/CBBBioc/reference/cbb_setup_workspace.md).
 
 ### Browse the full catalog
-
-GitHub’s markdown renderer strips the JavaScript an interactive table
-needs, so the live, searchable/sortable version of this table lives in
-the package website’s **Question catalog** article, alongside the
-narrative context and references for the benchmark:
 
 **[Browse all questions (interactive
 table)](https://vjcitn.github.io/CBBBioc/articles/question-catalog.html)**
@@ -73,3 +64,9 @@ here:
 | ml-model-track-overlap-q1 | Epigenomics | Retrieval | `Borzoi (Linder et al., doi:10.1038/s41588-024-02053-6) and Sei (Chen et al., doi:10.103...` |
 | compute-gc-content-interval-q1 | Genomics | Routine Analysis | `Using the GRCh38.p13 human reference genome, retrieve the reference DNA sequence for ch...` |
 | reverse-search-gwas-q1 | Population Genetics | Metadata Recovery | `Identify the PubMed ID of the study from which this summary statistics in reverse.searc...` |
+
+Production of README.md:
+
+``` R
+rmarkdown::render("README.Rmd", output_format = "github_document", output_file = "README.md", quiet = TRUE)
+```

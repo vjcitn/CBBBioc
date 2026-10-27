@@ -63,19 +63,28 @@ colnames(v1qs)
 
 ``` r
 
-knitr::kable(as.data.frame(table(Domain = v1qs$domain)), row.names = FALSE)
+dom_summary = do.call(rbind, lapply(sort(unique(v1qs$domain)), function(d) {
+  sub = v1qs[v1qs$domain == d, ]
+  exts = unique(unlist(lapply(
+    strsplit(sub$file_paths[sub$file_paths != ""], ", "),
+    function(z) tools::file_ext(gsub(" ", "", z))
+  )))
+  exts = exts[exts != ""]
+  # wrap (not truncate) the example question, and join with <br/> so the
+  # table cell wraps onto multiple lines instead of forcing horizontal scroll
+  ex_q = paste(strwrap(sub$question[1], width = 50), collapse = "<br/>")
+  data.frame(
+    Domain = d,
+    Freq = nrow(sub),
+    `File types used` = if (length(exts)) paste(sort(exts), collapse = ", ") else "(none)",
+    `Example question` = ex_q,
+    check.names = FALSE
+  )
+}))
+knitr::kable(dom_summary, row.names = FALSE, escape = FALSE)
 ```
 
-| Domain              | Freq |
-|:--------------------|-----:|
-| Epigenomics         |   20 |
-| Genomics            |   20 |
-| Machine Learning    |    7 |
-| Population Genetics |   12 |
-| Single-cell         |   21 |
-| Spatial             |    2 |
-| Structure           |    1 |
-| Transcriptomics     |   17 |
+[TABLE]
 
 ``` r
 
