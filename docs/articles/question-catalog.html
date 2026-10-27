@@ -144,9 +144,7 @@ any; resolved via <code><a href="../reference/cbb_url.html">cbb_url()</a></code>
 <span>    <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/fileutils.html" class="external-link">file_ext</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">" "</span>, <span class="st">""</span>, <span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="va">exts</span> <span class="op">=</span> <span class="va">exts</span><span class="op">[</span><span class="va">exts</span> <span class="op">!=</span> <span class="st">""</span><span class="op">]</span></span>
-<span>  <span class="co"># wrap (not truncate) the example question, and join with &lt;br/&gt; so the</span></span>
-<span>  <span class="co"># table cell wraps onto multiple lines instead of forcing horizontal scroll</span></span>
-<span>  <span class="va">ex_q</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strwrap.html" class="external-link">strwrap</a></span><span class="op">(</span><span class="va">sub</span><span class="op">$</span><span class="va">question</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, width <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"&lt;br/&gt;"</span><span class="op">)</span></span>
+<span>  <span class="va">ex_q</span> <span class="op">=</span> <span class="va">sub</span><span class="op">$</span><span class="va">question</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    Domain <span class="op">=</span> <span class="va">d</span>,</span>
 <span>    Freq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sub</span><span class="op">)</span>,</span>
@@ -155,7 +153,7 @@ any; resolved via <code><a href="../reference/cbb_url.html">cbb_url()</a></code>
 <span>    check.names <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dom_summary</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>, escape <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dom_summary</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="1%">
@@ -174,102 +172,96 @@ any; resolved via <code><a href="../reference/cbb_url.html">cbb_url()</a></code>
 <td align="left">Epigenomics</td>
 <td align="right">20</td>
 <td align="left">bigWig, csv, fasta, gz, tar</td>
-<td align="left">Consider chr11:124,738,681-124,738,772 (hg38).<br>What
-is the likely purpose of this region? Choose<br>only one. A. Active
-enhancer, Liver B. Active<br>enhancer, Brain frontal lobe C. Active
-enhancer,<br>ESC D. Active transcription, ubiquitous E. TSS<br>poised
-or flanking, ubiquitous F. Polycomb<br>repression, ubiquitous. Respond
-with a single<br>letter.</td>
+<td align="left">Consider chr11:124,738,681-124,738,772 (hg38). What is
+the likely purpose of this region? Choose only one. A. Active enhancer,
+Liver B. Active enhancer, Brain frontal lobe C. Active enhancer, ESC D.
+Active transcription, ubiquitous E. TSS poised or flanking, ubiquitous
+F. Polycomb repression, ubiquitous. Respond with a single letter.</td>
 </tr>
 <tr class="even">
 <td align="left">Genomics</td>
 <td align="right">20</td>
 <td align="left">bam, fa, fna, gz</td>
-<td align="left">Convert all of the following to Ensembl gene
-IDs.<br>Provide the ID without the Ensembl version
-(e.g.,<br>ENSGXXXXXXXXXXXX not ENSGXXXXXXXXXXXX.XX).<br>Respond with
-semi-colon separated values, no<br>spaces. Inputs: 1. NM_001276266.2 2.
-TERB2 3.<br>ENST00000267814 4. chr15:45167214-45187966 (hg38)<br>5.
-GeneID:9153 6. NP_922946.1 7. MIM:617658 8.<br>BEN domain containing 5,
-transcript variant 6.</td>
+<td align="left">Convert all of the following to Ensembl gene IDs.
+Provide the ID without the Ensembl version (e.g., ENSGXXXXXXXXXXXX not
+ENSGXXXXXXXXXXXX.XX). Respond with semi-colon separated values, no
+spaces. Inputs: 1. NM_001276266.2 2. TERB2 3. ENST00000267814 4.
+chr15:45167214-45187966 (hg38) 5. GeneID:9153 6. NP_922946.1 7.
+MIM:617658 8. BEN domain containing 5, transcript variant 6.</td>
 </tr>
 <tr class="odd">
 <td align="left">Machine Learning</td>
 <td align="right">7</td>
 <td align="left">pdf, tsv</td>
-<td align="left">Run the DNA language model here:<br><a href="https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16" class="external-link uri">https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16</a><br>on
-the 1000 bp long DNA sequence at hg38<br>chr12:7792299-7793299.
-Specifically, mask each<br>base one at a time, keeping all others
-unmasked,<br>and compute the per position base 2 entropy of<br>the
-predictions. Return the substring<br>corresponding to the longest run
-with &lt;0.5<br>entropy.</td>
+<td align="left">Run the DNA language model here: <a href="https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16" class="external-link uri">https://huggingface.co/kuleshov-group/caduceus-ph_seqlen-131k_d_model-256_n_layer-16</a>
+on the 1000 bp long DNA sequence at hg38 chr12:7792299-7793299.
+Specifically, mask each base one at a time, keeping all others unmasked,
+and compute the per position base 2 entropy of the predictions. Return
+the substring corresponding to the longest run with &lt;0.5
+entropy.</td>
 </tr>
 <tr class="even">
 <td align="left">Population Genetics</td>
 <td align="right">12</td>
 <td align="left">gz</td>
-<td align="left">Identify the PubMed ID of the study from which<br>this
-summary statistics in<br>reverse.search.gwas.q1.tsv.gz are derived.
-Print<br>only the PMID, e.g. 31510655.</td>
+<td align="left">Identify the PubMed ID of the study from which this
+summary statistics in reverse.search.gwas.q1.tsv.gz are derived. Print
+only the PMID, e.g. 31510655.</td>
 </tr>
 <tr class="odd">
 <td align="left">Single-cell</td>
 <td align="right">21</td>
 <td align="left">bam, gz, h5ad, rds, sizes</td>
-<td align="left">differential.composition.q1.1.mtx.gz
-and<br>differential.composition.q1.2.mtx.gz contain raw<br>scRNA
-counts matrices derived from retinal<br>samples of two individuals (one
-per file, each<br>column is a unique barcode that passes
-QC).<br>differential.composition.q1.genes.txt.gz is the<br>list of
-common genes. One of the cell types is<br>severely depleted in one of
-the two individuals.<br>What is this cell type? Return only the name
-of<br>the depleted cell type from this list: astrocyte,<br>microglial
-cell, RPE cell, cone cell, rod cell,<br>horizontal cell, bipolar cell,
-RGC, T cells,<br>macrophage, Schwann cell, Pericyte, B
-cell,<br>fibroblast, endothelial cell, muller glia cell.</td>
+<td align="left">differential.composition.q1.1.mtx.gz and
+differential.composition.q1.2.mtx.gz contain raw scRNA counts matrices
+derived from retinal samples of two individuals (one per file, each
+column is a unique barcode that passes QC).
+differential.composition.q1.genes.txt.gz is the list of common genes.
+One of the cell types is severely depleted in one of the two
+individuals. What is this cell type? Return only the name of the
+depleted cell type from this list: astrocyte, microglial cell, RPE cell,
+cone cell, rod cell, horizontal cell, bipolar cell, RGC, T cells,
+macrophage, Schwann cell, Pericyte, B cell, fibroblast, endothelial
+cell, muller glia cell.</td>
 </tr>
 <tr class="even">
 <td align="left">Spatial</td>
 <td align="right">2</td>
 <td align="left">gz</td>
-<td align="left">You are given a set of single cell
-transcriptomic<br>data and Visium spatial transcriptomic
-data<br>(spatial.sim.tar.gz). The single cell counts<br>matrix is
-found at spatial_q_sc_counts.csv, and<br>accompanying cell type
-metadata is found at<br>spatial_q_sc_metadata.csv. Spatial count data
-is<br>found at spatial_q_matrix.mtx.gz, gene counts are<br>found at
-spatial_q_features.tsv.gz, and are found<br>at spot barcodes
-spatial_q_barcodes.tsv.gz.<br>Finally scale factors are found
-at<br>spatial_q_scalefactors_json.json, high and low<br>resolution
-tissue images are found at<br>spatial_q_tissue_hires_image.png
-and<br>patial_q_tissue_hires_image.png respectively, and<br>tissue
-positions are found at<br>spatial_q_tissue_positions.csv. The
-spot-based<br>data is comprised entirely of cell types found in<br>the
-single cell data. Can you tell me what cell<br>type or cell types, if
-any, are biased towards<br>being in closer spatial proximity to
-spots<br>containing Tumor_Core? If none, please return<br>“None”.
-Please list these separated by commas in<br>alphabetical order.
-Expected answer format:<br>Endothelial,Macrophage.</td>
+<td align="left">You are given a set of single cell transcriptomic data
+and Visium spatial transcriptomic data (spatial.sim.tar.gz). The single
+cell counts matrix is found at spatial_q_sc_counts.csv, and accompanying
+cell type metadata is found at spatial_q_sc_metadata.csv. Spatial count
+data is found at spatial_q_matrix.mtx.gz, gene counts are found at
+spatial_q_features.tsv.gz, and are found at spot barcodes
+spatial_q_barcodes.tsv.gz. Finally scale factors are found at
+spatial_q_scalefactors_json.json, high and low resolution tissue images
+are found at spatial_q_tissue_hires_image.png and
+patial_q_tissue_hires_image.png respectively, and tissue positions are
+found at spatial_q_tissue_positions.csv. The spot-based data is
+comprised entirely of cell types found in the single cell data. Can you
+tell me what cell type or cell types, if any, are biased towards being
+in closer spatial proximity to spots containing Tumor_Core? If none,
+please return “None”. Please list these separated by commas in
+alphabetical order. Expected answer format: Endothelial,Macrophage.</td>
 </tr>
 <tr class="odd">
 <td align="left">Structure</td>
 <td align="right">1</td>
 <td align="left">pdb</td>
-<td align="left">Consider the PDB protein in the
-file<br>protein.shape.q1.pdb. Which of the following<br>uppercase
-letters does it resemble most closely:<br>B, D, F, H, J, L, N, P, R, T,
-V, X, Z? Consider<br>all possible projections and pick the best
-fit.</td>
+<td align="left">Consider the PDB protein in the file
+protein.shape.q1.pdb. Which of the following uppercase letters does it
+resemble most closely: B, D, F, H, J, L, N, P, R, T, V, X, Z? Consider
+all possible projections and pick the best fit.</td>
 </tr>
 <tr class="even">
 <td align="left">Transcriptomics</td>
 <td align="right">17</td>
 <td align="left">bam, fq, gz, tsv, txt</td>
-<td align="left">I have a bulk human RNA-seq fastq
-file<br>cryptic.exon.q1.fq.gz. There is exactly one<br>highly
-expressed coding gene that has a cryptic<br>exon in it formed by two
-novel junctions. Report<br>the HGNC gene symbol (uppercase) for that
-gene.</td>
+<td align="left">I have a bulk human RNA-seq fastq file
+cryptic.exon.q1.fq.gz. There is exactly one highly expressed coding gene
+that has a cryptic exon in it formed by two novel junctions. Report the
+HGNC gene symbol (uppercase) for that gene.</td>
 </tr>
 </tbody>
 </table>

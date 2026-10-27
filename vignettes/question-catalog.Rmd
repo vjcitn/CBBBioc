@@ -71,9 +71,7 @@ dom_summary = do.call(rbind, lapply(sort(unique(v1qs$domain)), function(d) {
     function(z) tools::file_ext(gsub(" ", "", z))
   )))
   exts = exts[exts != ""]
-  # wrap (not truncate) the example question, and join with <br/> so the
-  # table cell wraps onto multiple lines instead of forcing horizontal scroll
-  ex_q = paste(strwrap(sub$question[1], width = 50), collapse = "<br/>")
+  ex_q = sub$question[1]
   data.frame(
     Domain = d,
     Freq = nrow(sub),
@@ -82,7 +80,7 @@ dom_summary = do.call(rbind, lapply(sort(unique(v1qs$domain)), function(d) {
     check.names = FALSE
   )
 }))
-knitr::kable(dom_summary, row.names = FALSE, escape = FALSE)
+knitr::kable(dom_summary, row.names = FALSE)
 ```
 
 ```{r filetab}
