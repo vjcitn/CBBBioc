@@ -66,28 +66,11 @@ knitr::kable(dom_summary, row.names = FALSE)
 more associated input files, retrievable via `cbb_url()` and stageable with
 `cbb_setup_workspace()`.
 
-### Browse the full catalog
-
 **[Browse all questions (interactive table)](https://vjcitn.github.io/CBBBioc/articles/question-catalog.html)**
 
-*(the site at <https://vjcitn.github.io/CBBBioc/> is built with
-[`pkgdown`](https://pkgdown.r-lib.org/) from this README, the vignettes, and
-the function reference; regenerate it with `pkgdown::build_site()`.)*
 
-A plain-text preview of the first few questions, for quick browsing here:
+See package vignettes for more details.
 
-```{r preview, results="asis"}
-preview = v1qs[, c("question_id", "domain", "question_style", "question")]
-preview$question = ifelse(
-  nchar(preview$question) > 90,
-  paste0(substr(preview$question, 1, 87), "..."),
-  preview$question
-)
-# render as inline code so bare URLs in the question text are not
-# interpreted (and truncated mid-link) as markdown autolinks
-preview$question = paste0("`", preview$question, "`")
-knitr::kable(head(preview, 10), row.names = FALSE)
-```
 
 Production of README.md:
 ```
