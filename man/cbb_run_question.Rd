@@ -12,7 +12,8 @@ cbb_run_question(
   process_timeout_seconds = timeout_minutes * 60 + 60,
   overwrite = FALSE,
   bfc = NULL,
-  pi_path = "pi"
+  pi_path = "pi",
+  trace_file = NULL
 )
 }
 \arguments{
@@ -38,6 +39,12 @@ question folder, default FALSE}
 
 \item{pi_path}{character(1) path to the `pi` executable, default `"pi"`
 (resolved via `PATH`)}
+
+\item{trace_file}{character(1) path to additionally stream raw JSONL
+output to as it is produced (e.g. for `tail -f` while the run is in
+progress); if NULL (default), no such file is written. Unlike `raw_stdout`
+in the return value, this file is populated incrementally during the run,
+not only after `pi` exits}
 }
 \value{
 a list with elements `question_id`, `model`, `answer`, `usage`
@@ -65,5 +72,11 @@ counts are meaningful.
                           model = "llama-cpp/qwen3.6-35b-a3b")
   res$answer
   res$usage
+
+  # watch the trace live from another terminal with e.g.
+  # tail -f /tmp/q2821_trace.jsonl
+  res = cbb_run_question("variant-coordinate-lookup-1-q2821",
+                          model = "llama-cpp/qwen3.6-35b-a3b",
+                          trace_file = "/tmp/q2821_trace.jsonl")
 }
 }

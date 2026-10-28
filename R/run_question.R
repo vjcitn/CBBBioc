@@ -92,6 +92,11 @@
 #' @param bfc a `BiocFileCache` instance; if NULL, `cbb_filecache()` is used
 #' @param pi_path character(1) path to the `pi` executable, default `"pi"`
 #' (resolved via `PATH`)
+#' @param trace_file character(1) path to additionally stream raw JSONL
+#' output to as it is produced (e.g. for `tail -f` while the run is in
+#' progress); if NULL (default), no such file is written. Unlike `raw_stdout`
+#' in the return value, this file is populated incrementally during the run,
+#' not only after `pi` exits
 #' @return a list with elements `question_id`, `model`, `answer`, `usage`
 #' (token counts and cost, see Note), `elapsed_secs`, `raw_stdout` (character
 #' vector of JSONL lines), `raw_stderr`, and `workspace` (as returned by
@@ -111,12 +116,19 @@
 #'                           model = "llama-cpp/qwen3.6-35b-a3b")
 #'   res$answer
 #'   res$usage
+#'
+#'   # watch the trace live from another terminal with e.g.
+#'   # tail -f /tmp/q2821_trace.jsonl
+#'   res = cbb_run_question("variant-coordinate-lookup-1-q2821",
+#'                           model = "llama-cpp/qwen3.6-35b-a3b",
+#'                           trace_file = "/tmp/q2821_trace.jsonl")
 #' }
 #' @export
 cbb_run_question = function(question_id, model, base_dir = tempdir(),
                              timeout_minutes = 60,
                              process_timeout_seconds = timeout_minutes * 60 + 60,
-                             overwrite = FALSE, bfc = NULL, pi_path = "pi") {
+                             overwrite = FALSE, bfc = NULL, pi_path = "pi",
+                             trace_file = NULL) {
   ws = cbb_setup_workspace(question_id, base_dir = base_dir,
                             timeout_minutes = timeout_minutes,
                             overwrite = overwrite, bfc = bfc)
@@ -134,9 +146,16 @@ cbb_run_question = function(question_id, model, base_dir = tempdir(),
   # colons, ...) breaks shell parsing unless each arg is shQuote()d here.
   args = shQuote(c("--mode", "json", "--model", model, "--no-session", "--print", ws$prompt))
 
+  # when trace_file is set, stdout is redirected straight to that path by the
+  # shell (not buffered through R), so it fills in incrementally while pi is
+  # still running and can be tail -f'd from another terminal; raw_stdout is
+  # then read back from it once the process exits. Without trace_file,
+  # stdout = TRUE is used as before, which only returns after pi exits.
+  stdout_dest = if (!is.null(trace_file)) trace_file else TRUE
+
   start_time = Sys.time()
-  raw_stdout = tryCatch(
-    system2(pi_path, args, stdout = TRUE, stderr = stderr_file,
+  stdout_result = tryCatch(
+    system2(pi_path, args, stdout = stdout_dest, stderr = stderr_file,
             timeout = process_timeout_seconds),
     warning = function(w) {
       message(sprintf("cbb_run_question: %s", conditionMessage(w)))
@@ -144,6 +163,11 @@ cbb_run_question = function(question_id, model, base_dir = tempdir(),
     }
   )
   elapsed_secs = as.numeric(difftime(Sys.time(), start_time, units = "secs"))
+  raw_stdout = if (!is.null(trace_file)) {
+    if (file.exists(trace_file)) readLines(trace_file, warn = FALSE) else character(0)
+  } else {
+    stdout_result
+  }
   raw_stderr = if (file.exists(stderr_file)) {
     paste(readLines(stderr_file, warn = FALSE), collapse = "\n")
   } else {
