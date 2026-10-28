@@ -12,8 +12,8 @@ Description: Provide overview and helpers for CompBioBench evaluation of
 	questions, datasets, evaluation metrics.  Foster critical
 	evaluation of agent activities and conclusions.
 Depends: R (>= 4.1.0)
-Imports: BiocFileCache
-Suggests: knitr, BiocStyle, testthat, rmarkdown, DT, pkgdown, jsonlite
+Imports: BiocFileCache, jsonlite
+Suggests: knitr, BiocStyle, testthat, rmarkdown, DT, pkgdown
 License: Artistic-2.0
 VignetteBuilder: knitr
 biocViews: Infrastructure
