@@ -153,13 +153,17 @@ cbb_run_question = function(question_id, model, base_dir = tempdir(),
   # stdout = TRUE is used as before, which only returns after pi exits.
   stdout_dest = if (!is.null(trace_file)) trace_file else TRUE
 
+  # On a timeout, system2() signals a warning but still returns whatever
+  # stdout it had captured up to the kill (when stdout = TRUE); tryCatch()
+  # would unwind the stack on that warning and discard that partial output.
+  # withCallingHandlers() + muffleWarning logs the timeout without losing it.
   start_time = Sys.time()
-  stdout_result = tryCatch(
+  stdout_result = withCallingHandlers(
     system2(pi_path, args, stdout = stdout_dest, stderr = stderr_file,
             timeout = process_timeout_seconds),
     warning = function(w) {
       message(sprintf("cbb_run_question: %s", conditionMessage(w)))
-      character(0)
+      invokeRestart("muffleWarning")
     }
   )
   elapsed_secs = as.numeric(difftime(Sys.time(), start_time, units = "secs"))
