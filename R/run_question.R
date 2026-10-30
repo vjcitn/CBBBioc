@@ -129,6 +129,15 @@ cbb_run_question = function(question_id, model, base_dir = tempdir(),
                              process_timeout_seconds = timeout_minutes * 60 + 60,
                              overwrite = FALSE, bfc = NULL, pi_path = "pi",
                              trace_file = NULL) {
+  # resolve trace_file to an absolute path before setwd() below changes the
+  # cwd to the workspace dir -- a relative trace_file would otherwise be
+  # redirected there instead of wherever the caller actually meant, and if
+  # that directory doesn't exist the shell redirection fails immediately
+  # (near-zero elapsed_secs, pi never even launches).
+  if (!is.null(trace_file)) {
+    trace_file = normalizePath(trace_file, mustWork = FALSE)
+  }
+
   ws = cbb_setup_workspace(question_id, base_dir = base_dir,
                             timeout_minutes = timeout_minutes,
                             overwrite = overwrite, bfc = bfc)
